@@ -52,10 +52,6 @@ def check_env():
         'DB_USER': os.environ.get('DB_USER', 'No definido'),
         'DB_NAME': os.environ.get('DB_NAME', 'No definido')
     }
-@app.route('/productos', methods=['POST'])
-def agregar_producto():
-    if not request.is_json:
-        return jsonify({'error': 'Se esperaba JSON'}), 400
 
     data = request.get_json(silent=True)
     if not data:
