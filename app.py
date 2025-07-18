@@ -43,14 +43,18 @@ def agregar_producto():
     cursor.close()
     conn.close()
     return jsonify({'mensaje': 'Producto agregado'}), 201
+
 @app.route('/productos/<int:id>', methods=['DELETE'])
 def eliminar_producto(id):
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("DELETE FROM productos WHERE id = ?", (id,))
+    filas_afectadas = cursor.rowcount
     conn.commit()
     cursor.close()
     conn.close()
+    if filas_afectadas == 0:
+        return jsonify({'error': 'Producto no encontrado'}), 404
     return jsonify({'mensaje': 'Producto eliminado'}), 200
 
 if __name__ == '__main__':
