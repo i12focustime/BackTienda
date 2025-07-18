@@ -1,11 +1,9 @@
 from flask import Flask, jsonify, request
-from flask_cors import CORS
 from database import get_db_connection, crear_tabla
 
 app = Flask(__name__)
-CORS(app)
 
-# Asegurarse que la tabla existe
+# Crear tabla al iniciar la app
 crear_tabla()
 
 @app.route('/productos', methods=['GET'])
@@ -22,10 +20,7 @@ def obtener_productos():
 
 @app.route('/productos', methods=['POST'])
 def agregar_producto():
-    data = request.get_json(silent=True)
-    if not data:
-        return jsonify({'error': 'JSON inválido o vacío'}), 400
-
+    data = request.get_json()
     nombre = data.get('nombre')
     precio = data.get('precio')
     imagen = data.get('imagen')
@@ -42,6 +37,7 @@ def agregar_producto():
     conn.commit()
     cursor.close()
     conn.close()
+
     return jsonify({'mensaje': 'Producto agregado'}), 201
 
 @app.route('/productos/<int:id>', methods=['DELETE'])
@@ -53,6 +49,7 @@ def eliminar_producto(id):
     conn.commit()
     cursor.close()
     conn.close()
+
     if filas_afectadas == 0:
         return jsonify({'error': 'Producto no encontrado'}), 404
     return jsonify({'mensaje': 'Producto eliminado'}), 200

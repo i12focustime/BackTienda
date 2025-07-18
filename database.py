@@ -1,8 +1,8 @@
 import sqlite3
 
 def get_db_connection():
-    conn = sqlite3.connect('tienda.db')
-    conn.row_factory = sqlite3.Row
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row  # Para que devuelva diccionarios
     return conn
 
 def crear_tabla():
