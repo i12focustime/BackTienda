@@ -52,6 +52,32 @@ def check_env():
         'DB_USER': os.environ.get('DB_USER', 'No definido'),
         'DB_NAME': os.environ.get('DB_NAME', 'No definido')
     }
+@app.route('/productos', methods=['POST'])
+def agregar_producto():
+    if not request.is_json:
+        return jsonify({'error': 'Se esperaba JSON'}), 400
+
+    data = request.get_json(silent=True)
+    if not data:
+        return jsonify({'error': 'JSON inválido o vacío'}), 400
+
+    nombre = data.get('nombre')
+    precio = data.get('precio')
+    imagen = data.get('imagen')
+
+    if not nombre or not precio or not imagen:
+        return jsonify({'error': 'Faltan campos obligatorios'}), 400
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO productos (nombre, precio, imagen) VALUES (%s, %s, %s)",
+        (nombre, precio, imagen)
+    )
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return jsonify({'mensaje': 'Producto agregado'}), 201
 
 if __name__ == '__main__':
     app.run(debug=True)
