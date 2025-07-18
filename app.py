@@ -6,12 +6,12 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# Configuración de conexión desde variables de entorno
+# Configuración de conexión usando variables de entorno
 db_config = {
-    'host': os.getenv('DB_HOST', 'sql302.infinityfree.com'),
-    'user': os.getenv('DB_USER', 'if0_39499590'),
-    'password': os.getenv('DB_PASSWORD', 'I12focustime'),  # Default pero mejor no dejar la real aquí
-    'database': os.getenv('DB_NAME', 'if0_39499590_XXX')
+    'host': os.environ.get('DB_HOST'),
+    'user': os.environ.get('DB_USER'),
+    'password': os.environ.get('DB_PASSWORD'),
+    'database': os.environ.get('DB_NAME')
 }
 
 def get_db_connection():
@@ -47,4 +47,3 @@ def agregar_producto():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
