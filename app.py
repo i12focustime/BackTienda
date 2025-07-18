@@ -45,5 +45,13 @@ def agregar_producto():
     conn.close()
     return jsonify({'mensaje': 'Producto agregado'}), 201
 
+@app.route('/check-env')
+def check_env():
+    return {
+        'DB_HOST': os.environ.get('DB_HOST', 'No definido'),
+        'DB_USER': os.environ.get('DB_USER', 'No definido'),
+        'DB_NAME': os.environ.get('DB_NAME', 'No definido')
+    }
+
 if __name__ == '__main__':
     app.run(debug=True)
