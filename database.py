@@ -2,7 +2,7 @@ import sqlite3
 
 def get_db_connection():
     conn = sqlite3.connect('database.db')
-    conn.row_factory = sqlite3.Row  # Para que devuelva diccionarios
+    conn.row_factory = sqlite3.Row
     return conn
 
 def crear_tabla():
@@ -17,8 +17,4 @@ def crear_tabla():
         )
     ''')
     conn.commit()
-    cursor.close()
     conn.close()
-
-if __name__ == '__main__':
-    crear_tabla()
